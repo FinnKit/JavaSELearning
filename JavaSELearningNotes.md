@@ -122,7 +122,6 @@ class HelloWordl{
 注意：单行注释可以嵌套，而多行注释不能嵌套
 文档注释：被javadoc工具解析，生成一个说明书，格式为/\*\* \*/
 注意：一定要写注释，通过注释把自己的思想整理出来，然后用代码去实现。
-
 ![note](pic\note.png)
 
 注释的作用：
@@ -141,5 +140,4 @@ class HelloWordl{
 4. 字符常量（用’’括起来）：’a’
 5. 布尔常量：true和false（只能小写）
 6. 空常量：null
-![constant](pic\constant.png)
 
