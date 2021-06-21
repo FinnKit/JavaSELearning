@@ -158,7 +158,7 @@ class HelloWordl{
 <img src="pic\fromDecimal.png" alt="fromDecimal"  />
 
 3. 二进制到十进制快速转换
-<img src="pic\twoto8.png" alt="twoto8"  />
+<img src="pic\twoTo8.png" alt="twoTo8"  />
 
 4. x进制到y进制转换
 <img src="pic\xtoy.png" alt="xtoy"  />
