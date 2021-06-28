@@ -571,4 +571,240 @@ class DataCompare{
 	}
 }
 ```
+## Day4 Java基础语法-3
+### 流程控制语句
+含义：可以控制程序的执行流程
+分类：
+1. 顺序结构
+2. 选择结构
+3. 循环结构
+顺序结构：从上往下，依次执行
+选择结构：If语句；switch语句
+### 选择结构
+分类：if语句；switch语句
+#### if语句
+1. 格式1:
+if(比较表达式){
+	语句体;
+}
+2. 格式2：
+If(比较表达式){
+			语句体1;
+}else {
+	语句体2;
+}
+3. 格式3：
+If(比较表达式1){
+	语句体1;
+}else if(比较表达式2){
+	语句体2;
+}else if(比较表达式3){
+	语句体3;
+}
+…
+else {
+	语句体n+1;
+}
+
+> 1. if(b != 100);这里其实是有语句体的，只不过是空语句体
+> 2. 比较表达式无论简单还是复杂，结果必须是boolean类型
+> 3. if语句控制的语句体如果是一条语句，大括号可以省略；
+> 若是多条语句，就不能省略，建议永远不要省略；
+> 4. 三元（三目）运算符与if判断语句的区别
+> 区别：三元运算符实现的，都可以采用if语句实现，反之不成立；
+> 但当if语句控制的操作是一个输出语句的时候就不能；主要是因为三元运算符是一个运算符，运算符操作完毕就应该有一个结果，而不是一个输出。
+> 5. if语句可以实现嵌套
+
+例1：判断一个数是否为偶数
+```java
+/*
+	需求：通过键盘键入数字，并且判断该数字是否为偶数
+*/
+//导包
+import java.util.Scanner;
+class DataEven{
+	public static void main(String[] args){
+		//新建一个新对象
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入一个数字：");
+		//利用对象存储到变量中
+		int DataScanner = sc.nextInt();
+		if(DataScanner % 2 == 0){
+			System.out.println(DataScanner + "是一个偶数");
+		}else{
+			System.out.println(DataScanner + "不是一个偶数");
+		}
+	}
+}
+```
+例2：输入一个数据成绩，判断该成绩的等级
+90-100:优秀；80-90：良；70-80：中等；60-70：及格
+60以下：不及格
+> 虽然程序可以满足基本要求，但可能别人在使用的时候，不会按照你要求的数据给出了。所以在做一个程序的基本测试的时候，一定要考虑这样的几个问题：
+> 正确数据，错误数据，边界数据
+```java
+if(score >= 90 & score <= 100){
+	System.out.println(score + "成绩属于优秀");
+}else if(score >= 80 & score < 90){
+	System.out.println(score + "成绩属于良好");
+}else if(score >= 70 & score < 80){
+	System.out.println(score + "成绩属于中等");
+}else if(score >= 60 & score < 70){
+	System.out.println(score + "成绩属于及格");
+}else{
+	System.out.println("输入的成绩有误");
+}
+```
+> 这里使用逻辑运算符为&
+
+if语句的使用场景：
+1. 针对表达式是一个boolean类型的判断
+2. 针对一个范围的判断
+
+#### switch选择结构
+语句格式：
+switch(表达式){
+	case 值1:
+		语句体1;
+		break;
+	case 值2:
+		语句体2;
+		break;
+	…
+	default:
+		语句体2;
+		break;
+}
+
+格式的解释：
+表达式:这个地方的取值是有限定的：
+1. byte,short,char,int
+2. JDK5以后可以是枚举
+3. JDK7以后可以是字符串
+case：后面跟的是要和表达式进行比较的值
+语句体：要执行的代码
+break：表示中断，结束的意思，可以控制switch语句的结束
+default：当所有的值都和表达式不匹配的时候，就执行default控制的语句，其实就是它就相当于if语句的else
+
+> 1. case后面只能是常量，不能是变量，而且多个case后面的值不能出现相同的
+> 2. default可以省略吗？
+> 可以省略，但不建议，因为它的作用是对不正确的情况给出提示。
+> 特殊情况：case就可以把值固定，A,B,C,D
+> 3. break可以省略吗？
+> 可以省略，但是结果可能不是我们想要的。会出现一个现象：case穿透，最终我们建议不要省略
+> 4. switch语句的结束条件
+> A：遇到break就结束了
+> B：执行到末尾就结束，defalut若不放在末尾则也可能出现穿透，建议也要带上break
+
+例1：键盘输入一个数，进而判断对应的星期
+```java
+import java.util.Scanner;
+
+class SwitchDemo{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入一个数字：");
+		int data = sc.nextInt();
+		switch(data){
+			case 1:
+				System.out.println("星期一");
+				break;
+			case 2:
+				System.out.println("星期二");
+				break;
+			case 3:
+				System.out.println("星期三");
+				break;
+			case 4:
+				System.out.println("星期四");
+				break;
+			case 5:
+				System.out.println("星期五");
+				break;
+			case 6:
+				System.out.println("星期六");
+				break;
+			case 7:
+				System.out.println("星期日");
+				break;
+			default:
+				System.out.println("输入的数据有误");
+				break;
+		}
+	}
+}
+```
+
+例2：case穿透
+```java
+switch(week){
+	case 1:
+		Sysetem.out.println(星期一);
+	case 2:
+		Sysetem.out.println(星期二);
+	case 3:
+		Sysetem.out.println(星期三);
+		break;
+}
+```
+> 若输入1，则会出现星期一，星期二，星期三
+
+例3：dafalut的位置与break省略问题
+```java
+int x = 2, y = 3;
+switch(x){
+	default:
+		y++;
+		break;
+	case 3:
+		y++;
+	case 4:
+		y++;
+}
+```
+> x与case后面的常量进行判断，没有匹配的，则执行default后面的语句，然后遇到break，跳出switch
+> y = 4
+```java
+int x = 2, y = 3;
+switch(x){
+	default:
+		y++;
+	case 3:
+		y++;
+	case 4:
+		y++;
+}
+```
+> x与case后面的常量进行判断，没有匹配的，则执行default后面的语句，由于没有break，则顺序执行，出现了case穿透
+> y = 6
+
+例4：利用case穿透实现判断季节：春夏秋冬
+```java
+switch(month){
+	case 12:
+	case 1:
+	case 2:
+		System.out.println("冬");
+		break;
+	case 3:
+	case 4:
+	case 5:
+		System.out.println("春");
+		break;
+	case 6:
+	case 7:
+	case 8:
+		System.out.println("夏");
+		break;
+	case 9:
+	case 10:
+	case 11:
+		System.out.println("秋");
+	default:
+		System.out.println("输入的月份有误");
+}
+```
+   #### if语句与switch语句的区别
+
+
 
