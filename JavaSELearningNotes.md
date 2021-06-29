@@ -804,7 +804,282 @@ switch(month){
 		System.out.println("输入的月份有误");
 }
 ```
-   #### if语句与switch语句的区别
+#### if语句与switch语句的区别
+If语句：
+> 1. 针对结果是boolean类型判断
+> 2. 针对一个范围的判断
+> 3. 针对几个常量的判断
 
+Switch语句
+> 针对几个常量的判断
+
+### 循环结构
+分类：for语句，whilet语句，do…while语句
+组成：
+1. 初始化语句
+2. 判断条件语句（判断是否执行循环体）
+3. 循环体语句
+4. 控制条件语句（执行完一次循环体之后，执行控制条件语句，以确保循环体在合适时候结束循环）
+#### for语句
+格式：
+for(初始化语句;判断条件语句;控制条件语句){
+	循环体语句;
+}
+执行流程：
+1. 先执行初始化语句
+2. 执行判断条件语句，看结果是ture还是false
+若true则继续执行循环体语句
+若false则结束循环结构
+3. 执行完一次循环体语句后，执行控制条件语句
+4. 回到2
+> 1. 判断条件语句无论简单还是复杂，结果都是boolean
+> 2. 循环体语句若是一条语句，大括号可以省略；若多条，不能省略，建议永远不要省略
+
+例1：求1-100的和
+```java
+int sum = 0;
+for(int x = 1; x <= 100; x++){
+	sum += x;
+}
+```
+> for的初始化语句中需要定义变量int，进行初始化
+
+例2：求1-100偶数和
+```java
+int evenSum = 0;
+for(int x = 2; x <= 100; x += 2){
+	evenSum += x;
+}
+```
+例3：求输入数据的阶乘（10以内）
+```java
+//从键盘中导入一个数字
+Scanner sc = new Scanner(System.in);
+System.out.println("请输入10以内的数字");
+int num = sc.nextInt();
+//判断数字是否输入正确
+if(num >= 1 && num <= 10){
+	//计算其阶乘
+	int data  = num;
+	for(int x = num - 1; x >= 1; x--){
+		data *= x;
+	}
+	System.out.println("输入的数字" + num + "的阶乘为：" + data);
+}
+else{
+			System.out.println("输入的数字有误");
+}
+```
+例4：求水仙花数（参考\Code\Day4\ForDemo3.java）
+```java
+//初始化
+double sum = 0;
+// 判断水仙花
+System.out.println("水仙花数有：");
+for(int num = 100; num <= 999; num++){
+	double onesDigit = num % 10;
+	double tensDigit = num / 10 % 10;
+	double hundredsDigit = num / 100;
+	sum = Math.pow(onesDigit, 3) + Math.pow(tensDigit, 3) + Math.pow(hundredsDigit, 3);
+	if(sum == num){
+	System.out.println(num);
+	}
+}
+```
+> 水仙花数有：
+> 153
+> 370
+> 371
+> 407
+
+> 水仙花指一个三位数，其各位数字的立方和等于该数
+> 注意不能使用^，这个是异或的意思
+> 立方的简单方法：a\*a\*a，或调用库函数：Math.pow(a,3)（但要注意其数据类型是double）
+
+#### while语句
+基本格式：
+while(判断条件语句) {
+	循环语句;
+}
+扩展格式：
+初始化语句;
+while(判断条件语句){
+	循环体语句;
+	控制条件语句;
+}
+
+#### for循环和while循环的区别
+使用区别：若你想在循环结束后，继续使用控制条件的那个变量，用while循环，否则用for循环。
+因为变量及早从内存中消失，可以提高内存的使用效率
+如for(int x =10;..;… ){…} 执行完这个for循环后，变量x的内存会自动释放，故而在下一个for循环中或其他场景下依然可以使用x这个变量
+
+> 其实还有一种场景的理解：
+>若是在一个范围的，用for循环非常明确；
+>若是不明确要做多少次，用while循环较为合适。
+>如吃葡萄
+
+例：现有一张纸，厚度为0.01m,请问折叠多少次，可以保证厚度不低于珠穆朗玛峰的高度（8848m）（参考\Code\Day4\WhileDemo.java）
+```java
+int height = 1, num = 0;
+while(height < 884800){
+	height *= 2;
+	num++;
+}
+System.out.println("一共需要折"+num+"次");
+```
+> 一共需要折20次
+
+> 注意，这里的小数0.01变换为整数1，而相应最后比较结果为884800（int占4个字节，范围为-2^31-2^31-1，即-2147483648~2147483647）
+
+#### do…whike语句
+基本格式：
+do {
+	循环体语句;
+}while(判断条件语句);
+扩展格式：
+初始化语句;
+do {
+	循环体语句;
+	控制条件语句;
+}while(判断条件语句);
+
+#### 循环语句do…while与for,while的区别
+do…while循环至少执行一次循环体
+而for，while循环必须先判断条件是否成立，然后是否看是否执行循环体语句
+使用循环的顺序：
+优先考虑for,其次考虑while,最后考虑do…while
+
+> 一定要注意控制条件语句控制的那个变量的问题，不要弄丢了，否则就容易陷入死循环。
+> 两种最常用的死循环的格式：
+> while(true){…}
+> for(;;;)
+
+例1：打印九九乘法表（参考\Code\Day4\Demo1.java）
+1\*1=1
+1\*2=2	2\*2=4
+1\*3=3	2\*3=6	3\*3=9
+```java
+// 初始化乘积的结果
+int num = 0;
+for(int i = 1; i <= 9; i++){
+	for(int j = 1; j <= i; j++){
+		num = j * i;
+		System.out.print(j+"*"+i+"="+num+'\t');
+	}
+	System.out.print('\n');
+}
+```
+> println():打印后换行;print()：打印后不换行
+> print输出需要有间隔可以使用”\t”：tab
+> \转移字符：
+> ’\t’:tab键的位置
+> ‘\r’回车
+> ‘\n’换行
+
+### 跳转控制语句
+> Java中goto是保留字，目前不能使用。虽然没有goto语句可以增强程序的安全性，但是也带来很多不便，比如说，想实现跳转到某个语句的。
+为了弥补以上缺陷，Java提供了break，continue，return来实现控制语句的跳转和中断。
+break：中断
+continue：继续
+return：返回
+
+#### break语句
+中断的意思
+使用场景：
+1. switch语句中
+2. 循环语句中
+	需要加入if判断
+
+> 离开上面两个场景，无意义
+
+如何使用？
+1. 跳出单层循环
+2. 跳出多层循环
+	要想实现这个效果，就必须知道一个东西，带标签的语句
+	带标签语句格式：标签名: 语句
+
+#### continue语句
+使用场景：
+	在循环语句中
+离开上述使用场景没有意义
+
+continue作用：
+	单层循环对比break，区别：
+		break退出当前循环
+		continue退出本次循环
+	也可以带标签使用
+
+例：break与continue区别：break退出当前循环；continue退出本次循环（参考\Code\Day4\BreakContinueDemo1.java与BreakContinueDemo2.java）
+```java
+class BreakContinueDemo1{
+	public static void main(String[] args){
+		for(int x = 0; x < 10; x++){
+			if(x == 3){
+				break;
+			}
+			System.out.print(x + "\t");
+		}
+	}
+}
+```
+>0	1	2
+```java
+class BreakContinueDemo2{
+	public static void main(String[] args){
+		for(int x = 0; x < 10; x++){
+			if(x == 3){
+				continue;
+			}
+			System.out.print(x + "\t");
+		}
+	}
+}
+```
+>0	1	2	4	5	6	7	8	9
+
+#### return语句
+作用：返回
+其作用不是结束循环的，而是结束方法的。
+例（参考\Code\Day4\ReturnDemo1.java）
+```java
+class ReturnDemo1{
+	public static void main(String[] args){
+		for(int x = 0; x < 10; x++){
+			if(x == 3){
+				System.out.print("退出");
+				return;
+			}
+			System.out.println(x);
+		}
+		System.out.println("over");
+	}
+}
+```
+> 0
+> 1
+> 2
+> 退出
+
+练习：
+小芳的妈妈每天给她2.5元钱，她都会存起来，但是
+每当这一天是存钱的第五天或者5的倍数的话，她都会花去6元钱
+请问：经过多少天，小芳才可以存到100元钱
+```java
+class Demo2{
+	public static void main(String[] args){
+		double money = 0;
+		int day = 0;
+		while(money < 100){
+			money += 2.5;
+			day++;
+			if(day % 5 == 0){
+				money -= 6;
+			}
+		}
+		System.out.println("经过"+day+"天，小芳才可以存到100元钱");
+	}
+}
+```
+> 经过74天，小芳才可以存到100元钱
 
 
