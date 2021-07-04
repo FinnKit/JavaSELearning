@@ -1082,4 +1082,536 @@ class Demo2{
 ```
 > 经过74天，小芳才可以存到100元钱
 
+## Day5 Java的方法与数组
+### 方法
+#### 方法定义及格式
+	方法就是完成特定功能的代码块
+> 在很多语言里面都是函数的定义；函数在Java中被称为方法
 
+格式：
+修饰符 返回值类型 方法名(参数类型 参数名1,参数类型 参数名2…) {
+	函数体;
+	return 返回值;
+}
+
+详细解释：
+修饰符：目前就用public static，后面我们再详细的讲解其他的修饰符
+返回值类型：就是功能结果的数据类型，若无返回值，则为void
+方法名：符合命名规则即可，方便我们的调用；
+	变量和方法命名规则：单个单词(student),多个单词(studentAge)
+参数：
+	形式参数：就是方法定义上的，用于接收实际参数的；
+	实际参数：实际参与运算的，实际使用该方法时所用的
+参数类型：参数的数据类型
+参数名：变量名
+方法体语句：完成功能的代码
+return:结束方法
+返回值：就是功能的结果，由return带给调用者。
+
+> 要想写好一个方法，就必须明确两个东西：
+> 1. 返回值类型：结果的数据类型；
+> 2. 参数类型：要传递几个参数，及每个参数的数据类型
+
+#### 方法的调用
+方法的特点：不调用，不执行
+如何调用（有明确返回值的调用）
+1. 单独调用，一般来说没有意义，所以不推荐
+2. 输出调用，但是不够好，因为可能需要针对结果进行运算
+3. 赋值调用，推荐方案
+
+例1：求两个数之和（参考：\code\day5\MethodDemo1.java）
+```java
+class MethodDemo1{
+	public static void main(String[] args){
+		int x = 10, y = 20;
+		// 单独调用
+		sumMethod(x, y);
+		// 输出调用
+		System.out.println(sumMethod(x, y));
+		// 赋值调用
+		int sum = sumMethod(x, y);
+		System.out.println("The sum is "+ sum);
+	}
+	public static int sumMethod(int a, int b){
+		return a + b;
+	}
+}
+```
+> 30
+> The sum is 30
+
+> 执行过程：
+A：从main方法开始执行；
+B：定义整型变量x,y，并进行初始化
+C：进行赋值调用：将x,y两个变量值给了方法sumNum
+D：开始执行sum方法，x，y值分别给了a，b
+E：然后返回a+b值
+F：赋给了sum变量
+G：输出变量值
+
+例2：求输入两个数的最大值（参考：\code\day5\MethodDemo2.java）
+```java
+import java.util.Scanner;
+class MethodDemo2{
+	public static void main(String[] args){
+		//键盘输入两个数
+		Scanner sc = new Scanner(System.in);
+		System.out.print("请输入第一个数字：");
+		int num1 = sc.nextInt();
+		System.out.print("请输入第二个数字：");
+		int num2 = sc.nextInt();
+		//赋值调用求最大值的方法
+		int max = getMaxNum(num1, num2);
+		System.out.println("最大值为："+ max);
+	}
+	public static int getMaxNum(int a, int b){
+		return (a > b) ? a : b;
+	}
+}
+```
+例3：判断两个数是否相等（参考：\code\day5\MethodDemo3.java）
+```java
+import java.util.Scanner;
+class MethodDemo3{
+	public static void main(String[] args){
+		//键盘键入两个数
+		Scanner sc =  new Scanner(System.in);
+		System.out.print("请输入第一个数：");
+		int num1 = sc.nextInt();
+		System.out.print("请输入第二个数：");
+		int num2 = sc.nextInt();
+		//赋值调用方法
+		boolean result = getEqual(num1, num2);
+		System.out.println("以上两个数是否相等：" + result);
+	}
+	public static boolean getEqual(int a, int b){
+		return a == b;
+	}
+}
+```
+例4：判断三个数是否相等（参考：\code\day5\MethodDemo4.java）
+```java
+import java.util.Scanner;
+class MethodDemo4{
+	public static void main(String[] args){
+		//键盘键入三个数
+		Scanner sc =  new Scanner(System.in);
+		System.out.print("请输入第一个数：");
+		int num1 = sc.nextInt();
+		System.out.print("请输入第二个数：");
+		int num2 = sc.nextInt();
+		System.out.print("请输入第三个数：");
+		int num3 = sc.nextInt();
+		//赋值调用方法
+		int maxNum = getMaxNum(num1, num2, num3);
+		System.out.println("三个数最大值为：" + maxNum);
+	}
+	public static int getMaxNum(int a, int b, int c){
+		return (a>b) ? (a>c?a:c) : (b>c?b:c);
+	}
+}
+```
+#### void类型方法调用
+> 只能单独调用，无法输出调用和赋值调用
+
+例4：键盘录入一个数据n(1<=n<=9)，输入对应的nn乘法表（参考：\code\day5\MethodDemo6.java）
+```java
+import java.util.Scanner;
+class MethodDemo5{
+	public static void main(String[] args){
+		//键入数据
+		Scanner sc = new Scanner(System.in);
+		System.out.print("请输出一个在1到9的整数数据:");
+		int num = sc.nextInt();
+		//判断数据是否正确
+		if(num >=1 && num <=9){
+			printNN(num);
+		}else{
+			System.out.println("数据输入错误");
+		}
+	}
+	//打印n*n乘法表
+	public static void printNN(int a){
+		for(int i = 1; i <= a; i++){
+			for(int j = 1; j <= i; j++){
+				System.out.print(j + "*" + i + "=" + j*i + "\t");
+			}
+			System.out.print("\n");
+		}
+	}
+}
+```
+#### 方法重载
+情况：方法功能相同，参数列表不同的情况，为了见名知意，Java允许他们取一样的名字
+这个情况有一个专业名词：方法重载
+概述：在同一类中，允许存在一个以上的同名方法，只要它们的参数个数或者参数类型不同即可。
+> 特点：与返回值类型无关，只看方法名和参数列表
+> 参数列表不同：1.参数类型不同；2. 参数个数不同
+
+在调用时，JVM通过参数列表的不同来区分同名方法。
+例1：参数个数不同
+```java
+class MethodOverload1{
+	public static void main(String[] args){
+		System.out.println(sum(1,2));
+		System.out.println(sum(1,2,3));
+		System.out.println(sum(1,2,3,4));
+	}
+	public static int sum(int a, int b){
+		return a + b;
+	}
+	public static int sum(int a, int b, int c){
+		return a + b + c;
+	}
+	public static int sum(int a, int b, int c, int d){
+		return a + b + c + d;
+	}
+}
+```
+> 3
+> 6
+> 10
+
+例2：参数类型不同
+```java
+class MethodOverload2{
+	public static void main(String[] args){
+		byte x1 = 1, y1 = 2;
+		long x2 = 10L, y2 = 10L;
+		System.out.println(getEqual(x1,y1));
+		System.out.println(getEqual(x2,y2));
+	}
+	public static boolean getEqual(byte a, byte b){
+		return a == b;
+	}
+	public static boolean getEqual(long a, long b){
+		return a == b;
+	}
+}
+```
+> false
+> ture
+
+### 数组
+#### 概念
+存储同一种数据类型的多个元素的容器。
+#### 定义格式
+1. 数据类型[] 数组名;
+2. 数据类型 数组名[];
+举例：
+1. int[] a;	定义一个int类型的数组a变量
+2. int a[];	定义一个int类型的a数组变量
+> 上面两种定义可以认为是一样的，但我们经常使用的是1类型
+
+#### 数组的初始化
+概述：Java中的数组必须先初始化，才能去使用
+所谓初始化：就是为数组中的数组元素分配内存空间，并为每个数组元素赋值。
+
+初始化方式：
+动态初始化；动态初始化时只指定数组的长度，由系统为数组分配初始化值。
+静态初始化：静态初始化时指定每个数组元素的初始值，由系统决定数组长度
+
+**动态初始化格式**：数据类型[] 数组名 = new 数据类型[数据长度];
+如：int[] arr = new int[3];
+定义了一个数据类型为int型的数组arr，该数组中有三个int类型的值
+> new为数组分配内存空间
+> int为说明数组中元素数据类型为int型
+> []为这是一个数组
+> 3为数组的数据长度为3，即该数组有三个数据元素
+
+**静态初始化格式**：数据类型[] 数组名 = new 数据类型[] {元素1，元素2…};
+简化格式：数据类型[] 数组名 = {元素1，元素2,…};
+如：int[] arr1 = new int[]{1,2,3};
+简化后：int[] arr1 = {1,2,3};
+
+> 不要同时进行动态与静态初始化
+> 如：int[] arr = new int[3]{1,2,3}; //错误
+
+#### 数组的访问
+格式：数组名[索引];
+索引其实就是每个元素的编号，从0开始，最大索引为 数据长度-1
+
+数组操作常见的问题：
+1. ArrayIndexOutOfBoundsException：数组索引越界异常
+原因：访问量不存在的索引（索引越界）
+```java
+int[] arr1 = {1,2,3};
+System.out.println(arr1[3]);
+```
+2. NullPointerException：空指针异常
+原因：数组已经不再指向堆内存了，而你还用数组名去访问元素
+```java
+arr1 = null;
+System.out.println(arr1[0]);
+```
+> 综上：请把自己遇到的所有的场景Exception结尾的问题总结一下，以后遇到记录下来。
+> 现象 原因 解决方案
+> 举例：数组的使用
+> ```java
+> int[] arr = new int[3];
+> System.out.println(arr);//输出数组名
+> ```
+> 直接输出数组名，是输出的数组在内存分配中的地址
+> 如果想要数组中的数据值，可以用数组名和索引号来访问数组数据
+>
+> ```java
+> int[] arr = new int[3];
+> System.out.println(arr);//输出数组名
+> System.out.println(arr[0]);//输出数组中第一个元素
+> ```
+
+#### Java中内存分配
+Java程序为了提高程序的效率，就会对数据进行不同空间的分配
+具体划分为如下5个内存空间：
+**栈**：存放的是局部变量（在方法定义中或方法声明上的变量都称为局部变量）
+**堆**：存放的是所有new出来的东西
+**方法区**：
+**本地方法区**：
+**寄存器**：CPU使用
+
+> 栈内存与堆内存的区别：
+> 栈：存储的是局部变量，数据使用完毕（方法使用完毕）后就消失
+> 堆：
+> 	1. 每一个new出来的东西都有地址值
+> 	2. 每个变量都有默认值（也就是系统会自动进行初始化）
+> 		byte,short,int,long:0
+>		float,double:0.0
+>		char :’\u0000’
+>		boolean:false
+>		引用类型:null
+>	3. 用完毕就变成了垃圾，但是并没有立即回收。会在垃圾回收器空闲的时候回收
+
+例1：定义一个数组，输出该数组的名称和数组元素值
+给数组元素赋值，再次输出该数组的名称和数组元素值
+```java
+int[] arr = new int[3];//数组arr动态初始化
+System.out.println(arr);
+System.out.println(arr[0]);
+System.out.println(arr[1]);
+System.out.println(arr[2]);
+//数组元素赋值
+arr[0] = 1;
+arr[1] = 2;
+arr[2] = 3;
+System.out.println(arr);
+System.out.println(arr[0]);
+System.out.println(arr[1]);
+System.out.println(arr[2]);
+```
+> [I@1e58cb8
+> 0
+> 0
+> 0
+> [I@1e58cb8
+> 1
+> 2
+> 3
+
+例2：定义第一个数组，定义完毕后，给数组元素赋值，再输出数组名及元素值
+定义第二个数组，定义完毕后，给数组元素赋值，再输出数组名及元素值	
+定义第三个数组，把第一个数组的地址值赋值给它（注意两个数组数据类型一致），通过第三个数组的名称去把元素重复赋值，最后再输出数组名及元素值
+```java
+//定义第一个数组
+int[] arr1 = new int[3];//数组arr动态初始化
+System.out.println(arr1);
+System.out.println(arr1[0]);
+System.out.println(arr1[1]);
+System.out.println(arr1[2]);
+//数组元素赋值
+arr1[0] = 1;
+arr1[1] = 2;
+arr1[2] = 3;
+System.out.println(arr1);
+System.out.println(arr1[0]);
+System.out.println(arr1[1]);
+System.out.println(arr1[2]);
+//定义第二个数组
+int[] arr2 = new int[3];//数组arr动态初始化
+System.out.println(arr2);
+System.out.println(arr2[0]);
+System.out.println(arr2[1]);
+System.out.println(arr2[2]);
+//数组元素赋值
+arr2[0] = 4;
+arr2[1] = 5;
+arr2[2] = 6;
+System.out.println(arr2);
+System.out.println(arr2[0]);
+System.out.println(arr2[1]);
+System.out.println(arr2[2]);
+//定义第三个数组
+int[] arr3 = arr1;//第一个数组地址直接赋给第三个数组
+System.out.println(arr3);
+System.out.println(arr3[0]);
+System.out.println(arr3[1]);
+System.out.println(arr3[2]);
+//数组元素赋值
+arr3[0] = 7;
+arr3[1] = 8;
+arr3[2] = 9;
+System.out.println(arr3);
+System.out.println(arr3[0]);
+System.out.println(arr3[1]);
+System.out.println(arr3[2]);
+```
+> [I@1e58cb8
+> 0
+> 0
+> 0
+> [I@179935d
+> 4
+> 5
+> 6
+> [I@1e58cb8
+> 7
+> 8
+> 9
+
+> 在堆内存的两个引用指向同一个内存空间。无论是他们谁的操作，都是针对同一个地方。
+
+下面画出上面例子中数组内存图：
+<img src="\pic\ArrDistribution.png" alt="ArrDistribution"  />
+
+#### 数组的遍历
+利用循环，如for
+> 使用Java内置的方法，数组名.length 返回使用的长度
+
+例3：遍历数组的方法（参考\code\day5\ArrayDemo1.java）
+```java
+class ArrayDemo1{
+	public static void main(String[] args){
+		//初始化数组
+		int[] arr1 = {1,2,34,5,67,8,9,4,35};
+		printArray(arr1);	
+	}
+	//遍历数组的方法
+	public static void printArray(int[] arr){
+		System.out.print("[");
+		for(int index = 0; index < arr.length; index++){
+			if(index < arr.length - 1){
+				System.out.print(arr[index] + ", ");
+			}else{
+				System.out.print(arr[index]);
+			}
+		}
+		System.out.print("]");
+		System.out.print("\n");
+	}
+}
+```
+> [1, 2, 34, 5, 67, 8, 9, 4, 35]
+
+例4：获取数组的最大值（参考\code\day5\ArrayDemo2.java）
+```java
+class ArrayDemo2{
+	public static void main(String[] args){
+		int[] arr1 = {2,5,7,1,0,9,12,2};
+		System.out.println(getArrayMax(arr1));
+	}
+	//获取数组最大值的方法
+	public static int getArrayMax(int[] arr){
+		//假设数组第一个元素最大
+		int max = arr[0];
+		for(int index = 1; index < arr.length; index++){
+			if(max < arr[index]){
+				max = arr[index];
+			}
+		}
+		return max;
+	}
+}
+```
+> 12
+> 其中遍历数组一个个比较，比较使用的是if语句，这里也可以使用三目运算符
+> ```java
+> max = (max > arr[index]) ? max : arr[index];
+> ```
+
+例5：求数组的逆序（参考\code\day5\ArrayDemo3.java）
+```java
+class ArrayDemo3{
+	public static void main(String[] args){
+		int[] arr1 = {2,5,7,1,0,9,12,2};
+		printArray(arr1);
+		int[] arr2 = getArrayReverse(arr1);
+		printArray(arr2);
+	}
+	//显示数组的方法
+	public static void printArray(int[] arr){
+		System.out.print("[");
+		for(int index = 0; index < arr.length; index++){
+			if(index < arr.length - 1){
+				System.out.print(arr[index] + ", ");
+			}else{
+				System.out.print(arr[index] + "]");
+			}
+		}
+		System.out.print("\n");
+	}
+	//得到数组逆序的方法
+	public static int[] getArrayReverse(int[] arr){
+		int[] arrayReverse = new int[arr.length];
+		for(int index = 0; index < arr.length; index++){	
+			arrayReverse[index] = arr[arr.length - 1 - index];
+		}
+		return arrayReverse;
+	}
+	
+}
+```
+> [2, 5, 7, 1, 0, 9, 12, 2]
+> [2, 12, 9, 0, 1, 7, 5, 2]
+> 实际上，方法形参中的数组的地址与实参数组地址是一致的，方法内操作数组也会对实参数组产生影响。因此为了不产生影响，可以在方法内重新new一个数组，对该数组进行操作，最后返回这个new的数组的地址。
+> 而下面的方法，将会对原数组产生影响
+> ```java
+> public static int[] getArrayReverse(int[] arr){
+	int temp = 0; // 中间值初始化
+	for(int start = 0, end = arr.length - 1; start <= end; start++, end--){
+		temp = arr[start];
+		arr[start] = arr[end];
+		arr[end] = temp;
+	}
+	return arr;
+}
+> ```
+
+例6：定义一个数组{"星期一","星期二","星期三","星期四","星期五","星期六","星期日"}
+通过键入字符串来找到具体在上述数组的位置（参考\code\day5\ArrayDemo4.java）
+
+> 使用String，其为引用数据类型（属于类class中）
+> 使用Srting weekStr = sc.nextLine();获取键盘键入的字符串
+> 使用str1.equals(str2)，其返回数值一个boolean值，若相等为1，不等则为0
+```java
+import java.util.Scanner;
+class ArrayDemo4{
+	public static void main(String[] args){
+		String[] weekArr = {"星期一","星期二","星期三","星期四","星期五","星期六","星期日"};
+		//创建键盘键入字符串对象
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入一个星期：");
+		String weekStr = sc.nextLine();
+		//调用方法获取索引值
+		if(getWeekStrIndex(weekArr, weekStr) == -1){
+			System.out.println("输入的数据有误");
+		}else{
+			int indexReal = getWeekStrIndex(weekArr, weekStr) + 1;
+			System.out.println("您所输入的星期在第" + indexReal + "个");
+		}	
+	}
+	public static int getWeekStrIndex(String[] strArray, String str){
+		for(int index = 0; index < strArray.length; index++){
+			if(strArray[index].equals(str)){
+				return index;
+			}
+		}
+		return -1;
+	}
+}
+```
+> 其中
+> ```java
+> int indexReal = getWeekStrIndex(weekArr, weekStr) + 1;
+> ```
+> 主要是在字符串中符号“+”中无法进行加运算，只能是连接
+
+> 在一个方法中，若循环中没有找到该值，需要在最后返回一个值，否则该方法没有返回值，我们一般返回-1
