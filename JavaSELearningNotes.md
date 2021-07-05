@@ -73,7 +73,12 @@ class HelloWordl{
 	Path环境变量中记录的是可执行文件（如.exe文件）所在的路径；
 	Classpath模仿path环境路径，记录的是java类可执行文件（如.class文件）所在的路径。
 	
-4. SubLimeText开发工具
+4. Notepad++开发工具
+
+安装完毕后，进行首选项新建设置，如下
+<img src="\pic\Notepad.png" alt="Notepad"  />
+
+5. SubLimeText开发工具
     进行java代码编写，进行新建选项的设置。
     使用：新建txt，修改后缀.java，然后用SubLimeText打开。
 
@@ -908,6 +913,8 @@ while(判断条件语句){
 	控制条件语句;
 }
 
+> 判断条件语句为真时，才继续进行循环体
+
 #### for循环和while循环的区别
 使用区别：若你想在循环结束后，继续使用控制条件的那个变量，用while循环，否则用for循环。
 因为变量及早从内存中消失，可以提高内存的使用效率
@@ -1615,3 +1622,334 @@ class ArrayDemo4{
 > 主要是在字符串中符号“+”中无法进行加运算，只能是连接
 
 > 在一个方法中，若循环中没有找到该值，需要在最后返回一个值，否则该方法没有返回值，我们一般返回-1
+
+## Day6 二维数组与面对对象
+### 二维数组
+概念：就是元素为一维数组的一个数组
+#### 定义与初始化格式
+**格式一**：动态初始化
+数据类型\[\]\[\] 数组名 = new 数据类型\[m\]\[n\];
+m:表示这个二维数组有多少个一维数组
+n:表示每一个一维数组的元素有多少个
+> 1. 以下格式也可以表示二维数组
+> 	a:数据类型 数组名\[]\[] = new 数据类型\[m]\[n];
+> 	b:数据类型\[] 数组名\[] = new 数据类型\[m]\[n];
+> 2. 注意下面定义区别
+> 	int x,y;//定义了两个变量x，y
+> 	int[] x,y[];//定义了一个一维数组变量x和二维数组y
+
+**格式二**：动态初始化
+数据类型\[]\[] 变量名 = new 数据类型\[m]\[];
+m表示这个二维数组中一维数组的个数
+
+> 该格式没有直接给出一维数组的元素个数，因此m个一维数组的地址为null，但可以动态的给出，这个时候系统将自动分配地址。
+如：
+int\[]\[] arr = new int\[3]\[];
+arr[0] = new int[2];
+arr[1] = new int[3];
+arr[2] = new int[1];
+
+格式二二维数组内存图：
+<img src="\pic\Array2Distribution1.png" alt="ArrDistribution"  />
+
+**格式三**：静态初始化
+数据类型\[]\[] 变量名 = new 数据类型\[]\[]{{元素…},{元素…},…};
+简化格式：
+数据类型\[]\[] 变量名 = {{元素…},{元素…},…};
+如：int\[]\[] arr = {{1,2,3},{4,5},{6}};
+int\[]\[] arr = {{1,2,3},{4,5,6},{7,8,9}};
+
+格式三的二维数组内存图
+
+<img src="\pic\Array2Distribution2.png" alt="ArrDistribution"  />
+
+#### 遍历二维数组的方法
+```java
+public static void printArray2(int[][] arr){
+	for(int i = 0; i < arr.length; i++){
+		for(int j = 0; j < arr[i].length; j++){
+			System.out.print(arr[i][j] + " ");
+		}
+		System.out.println();
+	}
+}
+```
+> 外循环控制的是一维数组的个数，arr.length表示就是二维数组中一维数组的个数
+内循环控制的是每一个一维数组中元素的个数，arr[x].length表示的就是一维数组中元素的个数
+
+例：打印杨辉三角形（行数用键盘录入）（参考：\code\day6\Array2Demo.java）
+1
+1	1
+1	2	1
+1	3	3	1
+1	4	6	4	1
+…
+
+> A：任何一行的第一列与最后一列都是1
+> B：从第三行开始，除过第一列与最后一列，每一个数据都是上一行前一列与> >  它上一行该列之和
+
+```java
+import java.util.Scanner;
+class Array2Demo{
+	public static void main(String[] args){
+		//创建键盘键入对象
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入需要打印杨辉三角形的行数");
+		int rows = sc.nextInt();
+		if(rows <= 0){
+			System.out.println("输入数据错误");
+		}else{
+			printYangHuitriangle(rows);
+		}
+
+	}
+	public static void printYangHuitriangle(int row){
+		//创建杨辉三角形
+		int[][] arr = new int[row][];
+		if(row == 1){
+			arr[0] = new int[1];
+			arr[0][0] = 1;
+		}else if(row == 2){
+			arr[0] = new int[1];
+			arr[0][0] = 1;
+			arr[1] = new int[2];
+			arr[1][0] = 1;
+			arr[1][1] = 1;
+		}else{
+			arr[0] = new int[1];
+			arr[0][0] = 1;
+			arr[1] = new int[2];
+			arr[1][0] = 1;
+			arr[1][1] = 1;
+			for(int i = 2; i < row; i++){
+				arr[i] = new int[i+1];
+				arr[i][0] = 1;
+				arr[i][i] = 1;
+				for(int j = 1; j < i; j++){
+					arr[i][j] = arr[i-1][j] + arr[i-1][j-1];
+				}
+			}
+		}
+		//打印杨辉三角形
+		for(int i = 0; i < row; i++){
+			for(int j = 0; j <= i; j++){
+				System.out.print(arr[i][j] + "\t");
+			}
+			System.out.println();
+		}
+	}
+}
+```
+> 可以将上述printYangHuiTriangle()方法继续简化，思想是特殊的第一与第二行，可以与后面第一列与最后一列进行合并
+> ```java
+> //创建杨辉三角形
+> int[][] arr = new int[row][row];
+> for(int i = 0; i < row; i++){
+> 	arr[i][0] = 1;
+> 	arr[i][i] = 1;
+> }
+> for(int i = 2; i < row; i++){
+> 	for(int j = 1; j < i; j++){
+> 		arr[i][j] = arr[i-1][j] + arr[i-1][j-1];
+> 	}
+> }
+> ```
+> 因此，若碰到需要多行多列的数据，首先明确数据的i行j列
+
+### Java中的参数传递问题
+参数的数据类型主要分为两大类：
+基本数据类型（4类8种）与引用数据类型（3类）
+
+基本类型：形式参数的改变对实际参数没用影响
+引用类型：形式参数的改变直接影响了实际参数。
+> A:基本数据类型
+> 1. 数值型：
+> 	1）整数类型（byte,short,int,long）
+> 	类型			占用字节数		范围
+		byte				1			-128-127
+		short				2			-2^15-2^15-1
+		int					4			-2^31-2^31-1
+		long				8			-2^63-2^63-1
+> 	2）浮点类型（float,double）
+> 	类型			占用字节数		范围
+>	float		  	    4			-3.403e38-3.403e38
+>	double		  	    8			-1.465e308-1.798e308
+> 2. 字符型：char			      2
+> 3. 布尔型：boolean			1(不确定)	
+> B:引用数据类型
+> 1. 类：class		
+> 2. 接口：interface
+> 3. 数组：[]
+
+例1：加密问题
+某个公司采用公用电话传递数据信息，数据是小于8位的整数，为了确保安全。
+在传递过程中需要加密，加密规则如下：
+A：将数据倒序
+B：将每位数字都加上5，在用和除以10的余数代替该数字
+C：将第一位和最后一位数字交换
+请任意给定一个小于8位的整数，然后将加密的数据打印出来
+（参考：\code\day6\Encryption.java）
+
+> 分析：将数据存储在一维数组中，对数组上每位进行操作
+```java
+import java.util.Scanner;
+class Encryption{
+	public static void main(String[] args){
+		//创建键盘键入对象
+		Scanner sc =  new Scanner(System.in);
+		System.out.println("请输入小于8位的整数");
+		int data = sc.nextInt();
+		//调用加密方法，返回为字符串
+		String dataEncryption = encryption(data);
+		System.out.println(dataEncryption);
+	}
+	public static String encryption(int dataNum){
+		//将数据存入一维数组中
+		int[] dataArray = new int[8]; //由于小于8位，则直接定义数组中保存8个元素		
+		//使用while循环语句进行存储
+		int dataLength = 0;//统计数据位数
+		while(dataNum > 0){	//while结束条件为dataNum为0
+			dataArray[dataLength] = dataNum % 10;	//最小位存数据的最小位
+			dataLength++;
+			dataNum /= 10;
+		}
+		//加密1
+		int temp = 0;
+		for(int start = 0, end = dataLength - 1; start < end; start++, end--){
+			temp = dataArray[start];
+			dataArray[start] = dataArray[end];
+			dataArray[end] = temp;
+		}
+		//加密2
+		for(int index = 0; index < dataLength; index++){
+			dataArray[index] += 5;
+			dataArray[index] %= 10;
+		}
+		//加密3
+		temp = dataArray[0];
+		dataArray[0] = dataArray[dataLength - 1];
+		dataArray[dataLength - 1] = temp;
+		//形成字符串
+		String str = "";//字符串初始化
+		for(int index = dataLength - 1; index >= 0; index--){
+			str += dataArray[index];//注意从高位开始拼接
+		}
+		return str;
+	}
+}
+```
+> 1. 在每个步骤中可以使用如下代码，进行调试
+> ```java
+> System.out.println(dataLength);
+> for(int index = dataLength - 1; index >= 0; index--){
+> 	System.out.print(dataArray[index]);//输出从最高位开始输出
+> }
+> System.out.println();
+> ```
+> 2. 由于要输出一串数字，所以返回类型定义为String，通过字符串特有的运算将数字串连起来，而初始化如下：
+> ```java
+> String str = "";//字符串初始化
+> ```
+> 3. 加密2中运算可以使用如下,本质是一样的。
+> ```java
+> dataArray[index] = (dataArray[index] + 5) % 10;
+> ```
+> 4. 数据数组最低位存储数据的最低位
+
+### 面向对象的思想
+面向对象是基于面向过程的编程思想（因为首先有面向过程，才能有面向对象）
+面向过程：强调的是每一个功能的步骤
+面向对象：强调的是对象，然后由对象去调用功能
+#### 面向对象的思想特点
+1. 是一个更符合我们思想习惯的思想
+2. 可以将复杂的事情简单化
+3. 将我们从执行者变成了指挥者
+
+举例：
+	买电脑：
+	面向过程：了解电脑-了解需求-找对应参数信息-去电脑商城-讨价还价-买回电脑
+	面向对象：要买电脑-找人去给我买-这个人去买-买电脑
+
+#### 面向过程的代码举例
+把大象装进冰箱
+面向过程：打开冰箱门—>把大象放进去—>关上冰箱门
+代码举例：
+```java
+class Demo{
+	public static void main(String[] args){
+	//调用方法
+	//打开冰箱门
+	open();
+	//把大象放进去
+	put();
+	//关闭冰箱门
+	close();
+	}
+	public static void open(){
+		System.out.println("打开冰箱门");
+	}
+	//把大象放进去的方法
+	public static void put(){
+		System.out.println("把大象放进去");
+	}
+	//关闭冰箱门的方法
+	public static void close(){
+		System.out.println("关闭冰箱门");
+	}
+}
+```
+
+#### 面向对象的举例
+如何才能更加符合面向对象的思想，可以借助Java中的类来实现，但要思考如下问题：
+1. 有哪些类
+2. 每个类有哪些东西？
+3. 类与类之间的关系是什么？
+
+把大象装进冰箱的分析：
+1. 有哪些类？
+UML，名词提取法：
+类：大象，冰箱，Demo
+2. 类里面有那些东西？
+大象：进去方法
+冰箱：开门方法，关门方法
+Demo：main方法
+3. 类与类之间的关系？
+面向对象代码举例：
+```java
+class 大象{
+	System.out.println("把大象放进去");
+}
+class 冰箱{
+	System.out.println("开门");
+	System.out.println("关门");
+}
+class Demo{
+	public static void main(String[] args){
+		//调用大象类的方法
+		//调用冰箱类的开门方法
+		//调用冰箱类的关门方法
+	}
+}
+```
+
+### 面向对象开发，设计，特征
+面向对象开发：就是不断创建对象，使用对象，指挥对象做事情
+面向对象设计：其实就是在管理和维护对象之间的关系
+**面向对象的特征**：
+	封装，继承，多态
+#### 事物类与对象的关系
+现实中如何描述一个事物的？
+	属性，行为
+举例：
+学生
+属性：姓名，年龄，地址
+行为：学习，吃饭，睡觉
+
+>学习编程语言，是为了模拟现实世界的事物的，而学习Java中最基本的单位是类
+>所以，就应该把事物通过类来体现出来
+>由此，就可以得到现实世界事物和类的对应关系
+
+事物：			类：
+	属性			成员变量
+	行为			成员方法
+
